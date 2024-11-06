@@ -1,7 +1,23 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
+import axios from 'axios';
 import { Device, Status } from '../../types';
 import { useTranslation } from '../../hooks/useTranslation';
+
+// Define a more specific type for translations
+type TranslationValue = string | { [key: string]: string };
+
+// Helper function to convert translation to string
+function translateToString(translation: TranslationValue): string {
+  if (typeof translation === 'string') return translation;
+  if (typeof translation === 'object' && translation !== null) {
+    // If it's an object, try to get the first string value
+    const values = Object.values(translation);
+    const stringValue = values.find((val) => typeof val === 'string');
+    return typeof stringValue === 'string' ? stringValue : '';
+  }
+  return '';
+}
 
 interface DeviceEditModalProps {
   device: Device;
@@ -22,11 +38,34 @@ export default function DeviceEditModal({
     errorReason: device.errorReason || '',
     internalComments: device.internalComments || '',
   });
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateError, setUpdateError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onUpdate(device.id, updates);
-    onClose();
+    setIsUpdating(true);
+    setUpdateError(null);
+
+    try {
+      // First, update local state
+      onUpdate(device.id, updates);
+
+      // Then, update Salesforce
+      const salesforcePayload = {
+        salesforceId: device.id, // Using device.id as fallback
+        status: updates.status,
+        errorMessageCustomer: updates.errorReason || device.errorMessageCustomer,
+        errorLocation: updates.pointOfError || ''
+      };
+
+      await axios.patch('/update_service_ticket', salesforcePayload);
+
+      onClose();
+    } catch (error) {
+      console.error('Error updating device:', error);
+      setUpdateError(translateToString(t('device.updateError')));
+      setIsUpdating(false);
+    }
   };
 
   return (
@@ -34,7 +73,7 @@ export default function DeviceEditModal({
       <div className="bg-white rounded-lg w-full max-w-2xl">
         <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-900">
-            {t('device.edit')} - {device.serialNumber}
+            {translateToString(t('device.edit'))} - {device.serialNumber}
           </h2>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
             <X className="w-5 h-5 text-gray-500" />
@@ -42,9 +81,15 @@ export default function DeviceEditModal({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {updateError && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              {updateError}
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('common.status')}
+              {translateToString(t('common.status'))}
             </label>
             <select
               value={updates.status}
@@ -60,7 +105,7 @@ export default function DeviceEditModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('device.pointOfError')}
+              {translateToString(t('device.pointOfError'))}
             </label>
             <input
               type="text"
@@ -72,7 +117,7 @@ export default function DeviceEditModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('device.errorReason')}
+              {translateToString(t('device.errorReason'))}
             </label>
             <input
               type="text"
@@ -84,7 +129,7 @@ export default function DeviceEditModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('device.errorAnalysis')}
+              {translateToString(t('device.errorAnalysis'))}
             </label>
             <textarea
               value={updates.errorAnalysis}
@@ -96,7 +141,7 @@ export default function DeviceEditModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('device.internalComments')}
+              {translateToString(t('device.internalComments'))}
             </label>
             <textarea
               value={updates.internalComments}
@@ -111,14 +156,18 @@ export default function DeviceEditModal({
               type="button"
               onClick={onClose}
               className="btn-secondary"
+              disabled={isUpdating}
             >
-              {t('common.cancel')}
+              {translateToString(t('common.cancel'))}
             </button>
             <button
               type="submit"
               className="btn-primary"
+              disabled={isUpdating}
             >
-              {t('common.save')}
+              {isUpdating 
+                ? translateToString(t('common.saving')) 
+                : translateToString(t('common.save'))}
             </button>
           </div>
         </form>

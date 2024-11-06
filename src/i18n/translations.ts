@@ -36,7 +36,8 @@ export const translations = {
       errorAnalysis: 'Error Analysis',
       errorReason: 'Error Reason',
       internalComments: 'Internal Comments',
-      customer: 'Customer'
+      customer: 'Customer',
+      updateError: 'There was an error while updating the record'
     }
   },
   da: {

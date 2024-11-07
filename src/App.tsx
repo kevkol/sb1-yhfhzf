@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/layout/Header';
 import DashboardView from './components/dashboard/DashboardView';
 import BoxDetailView from './components/box/BoxDetailView';
-import { Box, Status } from './types';
+import { Box } from './types';
 
 const getBoxes = async (): Promise<Box[]> => {
   try {
@@ -94,11 +94,14 @@ function App() {
     }
   };
 
-  const handleStatusChange = (status: Status) => {
-    if (selectedBox) {
-      // TODO: Implement status update logic
-      console.log('Status updated:', status);
-    }
+  const handleUpdateBox = (boxId: string, updates: Partial<Box>) => {
+    setBoxes(prevBoxes => 
+      prevBoxes.map(box => 
+        box.id === boxId 
+          ? { ...box, ...updates } 
+          : box
+      )
+    );
   };
 
   return (
@@ -134,7 +137,7 @@ function App() {
         <BoxDetailView
           box={selectedBox}
           onClose={() => setSelectedBox(null)}
-          onStatusChange={handleStatusChange}
+          onUpdateBox={handleUpdateBox}
         />
       )}
     </div>

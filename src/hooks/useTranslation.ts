@@ -2,23 +2,29 @@ import { useContext } from 'react';
 import { LanguageContext } from '../contexts/LanguageContext';
 import { translations } from '../i18n/translations';
 
+type TranslationKey = keyof typeof translations['en'];
+type NestedTranslationKey = `${TranslationKey}.${string}`;
+
+type TranslationValue = string | { [key: string]: TranslationValue };
+
 export function useTranslation() {
   const { language } = useContext(LanguageContext);
-  
-  const t = (key: string) => {
+
+  const t = (key: NestedTranslationKey): string => {
     const keys = key.split('.');
-    let value = translations[language];
-    
+    let current: TranslationValue = translations[language];
+
     for (const k of keys) {
-      if (value?.[k] === undefined) {
-        console.warn(`Translation key not found: ${key}`);
+      if (typeof current === 'object' && k in current) {
+        current = current[k];
+      } else {
+        console.warn(`Translation key "${key}" not found for language "${language}"`);
         return key;
       }
-      value = value[k];
     }
-    
-    return value;
+
+    return typeof current === 'string' ? current : key;
   };
-  
-  return { t, language };
+
+  return { t };
 }

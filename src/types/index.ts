@@ -12,6 +12,7 @@ export interface Device {
   errorAnalysis?: string;
   errorReason?: string;
   internalComments?: string;
+  salesforceId: string;
 }
 
 export interface Box {

@@ -52,10 +52,12 @@ export default function DeviceEditModal({
 
       // Then, update Salesforce
       const salesforcePayload = {
-        salesforceId: device.salesforceId || device.id, // Using device.salesforceId if available, otherwise fallback to device.id
+        salesforceId: device.salesforceId || device.id,
         status: updates.status,
-        errorMessageCustomer: updates.errorReason || device.errorMessageCustomer,
-        errorLocation: updates.pointOfError || ''
+        errorLocation: updates.pointOfError || '',
+        errorReason: updates.errorReason || device.errorReason,
+        errorAnalysis: updates.errorAnalysis || device.errorAnalysis,
+        internalComments: updates.internalComments || device.internalComments,
       };
 
       await axios.patch('http://127.0.0.1:8000/update_service_ticket', salesforcePayload);

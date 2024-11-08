@@ -4,6 +4,7 @@ import { X, Package, AlertCircle } from 'lucide-react';
 import { Box, Device, Status } from '../../types';
 import DeviceList from './DeviceList';
 import StatusBadge from '../ui/StatusBadge';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface BoxDetailViewProps {
   box: Box;
@@ -18,6 +19,7 @@ export default function BoxDetailView({
 }: BoxDetailViewProps) {
   const [localDevices, setLocalDevices] = useState<Device[]>(box.devices);
   const [localBoxStatus, setLocalBoxStatus] = useState<Status>(box.status);
+  const { t } = useTranslation();
 
   const handleUpdateDevices = async (updates: Partial<Device>, deviceIds: string[]) => {
     try {
@@ -83,7 +85,7 @@ export default function BoxDetailView({
           <div className="flex items-center gap-3">
             <Package className="w-6 h-6 text-gray-400" />
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">Box #{box.boxNumber}</h2>
+              <h2 className="text-xl font-semibold text-gray-900">{t('box.details')} #{box.boxNumber}</h2>
               <p className="text-sm text-gray-500">{box.deviceType}</p>
             </div>
           </div>
@@ -99,7 +101,7 @@ export default function BoxDetailView({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Status</label>
+                <label className="text-sm font-medium text-gray-700">{t('common.status')}</label>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={localBoxStatus} className="mt-1" />
                   <select 
@@ -107,16 +109,17 @@ export default function BoxDetailView({
                     onChange={(e) => handleBoxStatusChange(e.target.value as Status)}
                     className="ml-2 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   >
-                    <option value="New">New</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                    <option value="On Hold">On Hold</option>
+                    <option value="New">{t('box.status.new')}</option>
+                    <option value="In Progress">{t('box.status.inProgress')}</option>
+                    <option value="Completed">{t('box.status.completed')}</option>
+                    <option value="On Hold">{t('box.status.onHold')}</option>
+                    <option value="Open">{t('box.status.open')}</option>
                   </select>
                 </div>
               </div>
               {box.assignedTechnician && (
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Assigned Technician</label>
+                  <label className="text-sm font-medium text-gray-700">{t('box.assignedTechnician')}</label>
                   <p className="mt-1 text-gray-900">{box.assignedTechnician}</p>
                 </div>
               )}
@@ -125,16 +128,16 @@ export default function BoxDetailView({
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="text-sm font-medium text-yellow-800">Important Note</h4>
+                <h4 className="text-sm font-medium text-yellow-800">{t('common.importantNote')}</h4>
                 <p className="text-sm text-yellow-700 mt-1">
-                  Changes made to devices in this box will be synchronized with Salesforce within 15 minutes.
+                  {t('box.syncNote')}
                 </p>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Devices ({localDevices.length})</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">{t('box.deviceCount.multiple')} ({localDevices.length})</h3>
             <DeviceList 
               devices={localDevices} 
               onUpdateDevices={handleUpdateDevices} 

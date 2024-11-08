@@ -1,6 +1,9 @@
 import React from 'react';
 import { Box } from '../../types';
 import { Package, ChevronRight } from 'lucide-react';
+// import { useTranslation } from 'react-i18next'; // Stellen Sie sicher, dass dieser Import korrekt ist
+import { useTranslation } from '../../hooks/useTranslation';
+
 
 interface BoxCardProps {
   box: Box;
@@ -8,6 +11,8 @@ interface BoxCardProps {
 }
 
 export default function BoxCard({ box, onClick }: BoxCardProps) {
+  const { t } = useTranslation();
+
   const statusColors = {
     'New': 'bg-blue-100 text-blue-800',
     'In Progress': 'bg-yellow-100 text-yellow-800',
@@ -34,16 +39,16 @@ export default function BoxCard({ box, onClick }: BoxCardProps) {
       <div className="mt-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[box.status]}`}>
-            {box.status}
+            {t(`box.status.${box.status.toLowerCase()}`)}
           </span>
           <span className="text-sm text-gray-500">
-            {box.devices.length} {box.devices.length === 1 ? 'device' : 'devices'}
+            {box.devices.length} {box.devices.length === 1 ? t('box.deviceCount.single') : t('box.deviceCount.multiple')}
           </span>
         </div>
         
         {box.assignedTechnician && (
           <span className="text-sm text-gray-500">
-            Assigned to: {box.assignedTechnician}
+            {t('box.assignedTechnician')}: {box.assignedTechnician}
           </span>
         )}
       </div>

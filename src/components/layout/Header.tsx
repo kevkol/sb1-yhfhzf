@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menu, Globe, User } from 'lucide-react';
+import { LanguageContext } from '../../contexts/LanguageContext';
 
 interface HeaderProps {
   toggleSidebar: () => void;
-  toggleLanguage: () => void;
-  language: 'en' | 'da';
 }
 
-export default function Header({ toggleSidebar, toggleLanguage, language }: HeaderProps) {
+export default function Header({ toggleSidebar }: HeaderProps) {
+  const { language, setLanguage } = useContext(LanguageContext);
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'da' : 'en');
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 fixed w-full z-10">
       <div className="px-4 h-16 flex items-center justify-between">

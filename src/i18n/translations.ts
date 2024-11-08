@@ -9,7 +9,8 @@ export const translations = {
       search: 'Search',
       filter: 'Filter',
       close: 'Close',
-      selected: 'selected'
+      selected: 'selected',
+      noData: 'No data available'
     },
     dashboard: {
       title: 'GRAS Technician Dashboard',
@@ -25,7 +26,18 @@ export const translations = {
       syncNote: 'Changes made to devices in this box will be synchronized with Salesforce within 15 minutes.',
       bulkUpdate: 'Bulk Update',
       selectAll: 'Select All',
-      updateSelected: 'Update Selected'
+      updateSelected: 'Update Selected',
+      status: {
+        new: 'New',
+        inProgress: 'In Progress',
+        completed: 'Completed',
+        onHold: 'On Hold',
+        open: 'Open'
+      },
+      deviceCount: {
+        single: 'device',
+        multiple: 'devices'
+      }
     },
     device: {
       edit: 'Edit Device',
@@ -50,7 +62,8 @@ export const translations = {
       search: 'Søg',
       filter: 'Filter',
       close: 'Luk',
-      selected: 'valgt'
+      selected: 'valgt',
+      noData: 'Ingen data tilgængelig'
     },
     dashboard: {
       title: 'GRAS Tekniker Dashboard',
@@ -66,7 +79,18 @@ export const translations = {
       syncNote: 'Ændringer foretaget på enheder i denne boks vil blive synkroniseret med Salesforce inden for 15 minutter.',
       bulkUpdate: 'Masseopdatering',
       selectAll: 'Vælg Alle',
-      updateSelected: 'Opdater Valgte'
+      updateSelected: 'Opdater Valgte',
+      status: {
+        new: 'Ny',
+        inProgress: 'I gang',
+        completed: 'Afsluttet',
+        onHold: 'På hold',
+        open: 'Åben'
+      },
+      deviceCount: {
+        single: 'enhed',
+        multiple: 'enheder'
+      }
     },
     device: {
       edit: 'Rediger Enhed',
@@ -77,7 +101,8 @@ export const translations = {
       errorAnalysis: 'Fejlanalyse',
       errorReason: 'Fejlårsag',
       internalComments: 'Interne Kommentarer',
-      customer: 'Kunde'
+      customer: 'Kunde',
+      updateError: 'Der opstod en fejl under opdatering af posten'
     }
   }
 };

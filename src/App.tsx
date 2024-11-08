@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LanguageProvider } from './contexts/LanguageContext';
 import Header from './components/layout/Header';
 import DashboardView from './components/dashboard/DashboardView';
 import BoxDetailView from './components/box/BoxDetailView';
@@ -9,40 +10,27 @@ const getBoxes = async (): Promise<Box[]> => {
     console.log('Fetching boxes from API...');
     const response = await fetch('http://127.0.0.1:8000/boxes', {
       method: 'GET',
-      mode: 'cors', // explicitly set CORS mode
-      credentials: 'include', // include credentials like cookies
+      mode: 'cors',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        // Explicitly set the origin header
         'Origin': 'http://localhost:5173'
       }
     });
     
-    console.log('Full Response Object:', {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries()),
-      type: response.type,
-      url: response.url
-    });
-
-    // Log the raw text response before parsing
     const rawText = await response.text();
     console.log('Raw API Response Text:', rawText);
 
-    // Try to parse the raw text as JSON
     let data;
     try {
       data = JSON.parse(rawText);
       console.log('Parsed JSON Data:', data);
     } catch (parseError) {
       console.error('JSON Parsing Error:', parseError);
-      console.log('Unparseable response text:', rawText);
       throw new Error(`Failed to parse JSON: ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`);
     }
 
-    // Validate the parsed data
     if (!Array.isArray(data)) {
       console.error('API response is not an array:', data);
       throw new Error('API did not return an array of boxes');
@@ -51,12 +39,11 @@ const getBoxes = async (): Promise<Box[]> => {
     return data;
   } catch (error) {
     console.error('Detailed error fetching boxes:', error);
-    return []; // Return empty array on error
+    return [];
   }
 };
 
-function App() {
-  const [language, setLanguage] = useState<'en' | 'da'>('en');
+function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedBox, setSelectedBox] = useState<Box | null>(null);
   const [boxes, setBoxes] = useState<Box[]>([]);
@@ -108,8 +95,6 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       <Header
         toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-        toggleLanguage={() => setLanguage(language === 'en' ? 'da' : 'en')}
-        language={language}
       />
       
       <main className="pt-16">
@@ -141,6 +126,14 @@ function App() {
         />
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

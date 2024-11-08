@@ -10,7 +10,8 @@ export const translations = {
       filter: 'Filter',
       close: 'Close',
       selected: 'selected',
-      noData: 'No data available'
+      noData: 'No data available',
+      importantNote: 'Important Note'
     },
     dashboard: {
       title: 'GRAS Technician Dashboard',
@@ -63,7 +64,8 @@ export const translations = {
       filter: 'Filter',
       close: 'Luk',
       selected: 'valgt',
-      noData: 'Ingen data tilgængelig'
+      noData: 'Ingen data tilgængelig',
+      importantNote: 'Vigtig Bemærkning'
     },
     dashboard: {
       title: 'GRAS Tekniker Dashboard',

@@ -104,23 +104,15 @@ export default function BoxDetailView({
                 <label className="text-sm font-medium text-gray-700">{t('common.status')}</label>
                 <div className="flex items-center gap-2">
                   <StatusBadge status={localBoxStatus} className="mt-1" />
-                  <select 
-                    value={localBoxStatus} 
-                    onChange={(e) => handleBoxStatusChange(e.target.value as Status)}
-                    className="ml-2 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  >
-                    <option value="New">{t('box.status.new')}</option>
-                    <option value="In Progress">{t('box.status.inProgress')}</option>
-                    <option value="Completed">{t('box.status.completed')}</option>
-                    <option value="On Hold">{t('box.status.onHold')}</option>
-                    <option value="Open">{t('box.status.open')}</option>
-                  </select>
+                  
                 </div>
               </div>
               {box.assignedTechnician && (
                 <div>
                   <label className="text-sm font-medium text-gray-700">{t('box.assignedTechnician')}</label>
-                  <p className="mt-1 text-gray-900">{box.assignedTechnician}</p>
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={box.assignedTechnician} className="mt-1" />
+                  </div>
                 </div>
               )}
             </div>

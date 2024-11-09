@@ -18,7 +18,10 @@ export const translations = {
       searchBoxes: 'Search boxes...',
       assignedTo: 'Assigned to',
       device: 'device',
-      devices: 'devices'
+      devices: 'devices',
+      filterByTechnician: 'Filter by Assigned Technician',
+      allTechnicians: 'All',
+      unassigned: 'Unassigned'
     },
     box: {
       details: 'Box Details',
@@ -72,7 +75,10 @@ export const translations = {
       searchBoxes: 'Søg i bokse...',
       assignedTo: 'Tildelt til',
       device: 'enhed',
-      devices: 'enheder'
+      devices: 'enheder',
+      filterByTechnician: 'Filtrer efter tildelt tekniker',
+      allTechnicians: 'Alle',
+      unassigned: 'Ikke tildelt'
     },
     box: {
       details: 'Boks Detaljer',

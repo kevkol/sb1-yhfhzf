@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Menu, Globe, User } from 'lucide-react';
 import { LanguageContext } from '../../contexts/LanguageContext';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -8,6 +9,7 @@ interface HeaderProps {
 
 export default function Header({ toggleSidebar }: HeaderProps) {
   const { language, setLanguage } = useContext(LanguageContext);
+  const { t } = useTranslation();
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'da' : 'en');
@@ -23,7 +25,7 @@ export default function Header({ toggleSidebar }: HeaderProps) {
           >
             <Menu className="w-6 h-6 text-gray-600" />
           </button>
-          <h1 className="text-xl font-semibold text-gray-800">GRAS Technician Dashboard</h1>
+          <h1 className="text-xl font-semibold text-gray-800">{t('dashboard.title')}</h1>
         </div>
         
         <div className="flex items-center gap-4">

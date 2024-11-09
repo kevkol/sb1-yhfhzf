@@ -17,8 +17,8 @@ export const translations = {
       title: 'GRAS Technician Dashboard',
       searchBoxes: 'Search boxes...',
       assignedTo: 'Assigned to',
-      device: 'device',
-      devices: 'devices',
+      device: 'Device',
+      devices: 'Devices',
       filterByTechnician: 'Filter by Assigned Technician',
       allTechnicians: 'All',
       unassigned: 'Unassigned'
@@ -26,7 +26,7 @@ export const translations = {
     box: {
       details: 'Box Details',
       assignedTechnician: 'Assigned Technician',
-      deviceCount: 'Devices',
+      deviceCountLabel: 'Devices', // Umbenannt von 'deviceCount'
       syncNote: 'Changes made to devices in this box will be synchronized with Salesforce within 15 minutes.',
       bulkUpdate: 'Bulk Update',
       selectAll: 'Select All',
@@ -39,8 +39,8 @@ export const translations = {
         open: 'Open'
       },
       deviceCount: {
-        single: 'device',
-        multiple: 'devices'
+        single: 'Device',
+        multiple: 'Devices'
       }
     },
     device: {
@@ -74,8 +74,8 @@ export const translations = {
       title: 'GRAS Tekniker Dashboard',
       searchBoxes: 'Søg i bokse...',
       assignedTo: 'Tildelt til',
-      device: 'enhed',
-      devices: 'enheder',
+      device: 'Enhed',
+      devices: 'Enheder',
       filterByTechnician: 'Filtrer efter tildelt tekniker',
       allTechnicians: 'Alle',
       unassigned: 'Ikke tildelt'
@@ -83,7 +83,7 @@ export const translations = {
     box: {
       details: 'Boks Detaljer',
       assignedTechnician: 'Tildelt Tekniker',
-      deviceCount: 'Enheder',
+      deviceCountLabel: 'Enheder', // Umbenannt von 'deviceCount'
       syncNote: 'Ændringer foretaget på enheder i denne boks vil blive synkroniseret med Salesforce inden for 15 minutter.',
       bulkUpdate: 'Masseopdatering',
       selectAll: 'Vælg Alle',
@@ -96,8 +96,8 @@ export const translations = {
         open: 'Åben'
       },
       deviceCount: {
-        single: 'enhed',
-        multiple: 'enheder'
+        single: 'Enhed',
+        multiple: 'Enheder'
       }
     },
     device: {

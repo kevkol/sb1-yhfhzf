@@ -19,6 +19,7 @@ export default function BoxDetailView({
 }: BoxDetailViewProps) {
   const [localDevices, setLocalDevices] = useState<Device[]>(box.devices);
   const [localBoxStatus, setLocalBoxStatus] = useState<Status>(box.status);
+  const [localAssignedTechnician, setLocalAssignedTechnician] = useState<string | null>(box.assignedTechnician);
   const { t } = useTranslation();
 
   const handleUpdateDevices = async (updates: Partial<Device>, deviceIds: string[]) => {
@@ -26,7 +27,7 @@ export default function BoxDetailView({
       // Update local state first
       const updatedDevices = localDevices.map(device => 
         deviceIds.includes(device.id) 
-          ? { ...device, ...updates } 
+          ? { ...device, ...updates, status: updates.status || device.status } // Stellen Sie sicher, dass der Status aktualisiert wird
           : device
       );
       setLocalDevices(updatedDevices);
@@ -46,7 +47,7 @@ export default function BoxDetailView({
 
       // Batch update to Salesforce
       await Promise.all(salesforceUpdates.map(update => 
-        axios.patch('/update_service_ticket', update)
+        axios.patch('http://127.0.0.1:8500/update_service_ticket', update)
       ));
 
       // If a parent update method is provided, call it
@@ -75,6 +76,25 @@ export default function BoxDetailView({
       console.error('Error updating box status:', error);
       // Revert status if update fails
       setLocalBoxStatus(box.status);
+    }
+  };
+
+  const handleAssignedTechnicianChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newAssignee = event.target.value === 'Unassigned' ? null : event.target.value;
+    try {
+      setLocalAssignedTechnician(newAssignee);
+
+      await axios.patch('http://127.0.0.1:8500/update_service_box', {
+        salesforceId: box.salesforceId,
+        assignee: newAssignee
+      });
+
+      if (onUpdateBox) {
+        onUpdateBox(box.id, { assignedTechnician: newAssignee });
+      }
+    } catch (error) {
+      console.error('Error updating assigned technician:', error);
+      setLocalAssignedTechnician(box.assignedTechnician);
     }
   };
 
@@ -107,14 +127,19 @@ export default function BoxDetailView({
                   
                 </div>
               </div>
-              {box.assignedTechnician && (
-                <div>
-                  <label className="text-sm font-medium text-gray-700">{t('box.assignedTechnician')}</label>
-                  <div className="flex items-center gap-2">
-                    <StatusBadge status={box.assignedTechnician} className="mt-1" />
-                  </div>
-                </div>
-              )}
+              <div>
+                <label className="text-sm font-medium text-gray-700">{t('box.assignedTechnician')}</label>
+                <select
+                  value={localAssignedTechnician || 'Unassigned'}
+                  onChange={handleAssignedTechnicianChange}
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                >
+                  <option value="Magnus">Magnus</option>
+                  <option value="Freja">Freja</option>
+                  <option value="Mikkel">Mikkel</option>
+                  <option value="Unassigned">Unassigned</option>
+                </select>
+              </div>
             </div>
             
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start gap-3">

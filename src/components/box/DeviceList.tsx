@@ -107,7 +107,7 @@ export default function DeviceList({ devices, onUpdateDevices }: DeviceListProps
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <StatusBadge status={device.status} />
+                    <StatusBadge status={device.status || 'Unknown'} /> {/* Stellen Sie sicher, dass ein Status vorhanden ist */}
                     <button
                       onClick={() => setEditingDevice(device)}
                       className="p-1 hover:bg-gray-200 rounded"

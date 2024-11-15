@@ -36,7 +36,16 @@ const getBoxes = async (): Promise<Box[]> => {
       throw new Error('API did not return an array of boxes');
     }
     
-    return data;
+    // Stellen Sie sicher, dass jedes Gerät einen Status hat
+    const boxesWithStatus = data.map((box: Box) => ({
+      ...box,
+      devices: box.devices.map((device: Device) => ({
+        ...device,
+        status: device.status || 'Unknown', // Fügen Sie einen Standardstatus hinzu
+      })),
+    }));
+
+    return boxesWithStatus;
   } catch (error) {
     console.error('Detailed error fetching boxes:', error);
     return [];

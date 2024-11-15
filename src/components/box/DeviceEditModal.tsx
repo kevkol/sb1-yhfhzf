@@ -60,7 +60,7 @@ export default function DeviceEditModal({
         internalComments: updates.internalComments || device.internalComments,
       };
 
-      await axios.patch('http://127.0.0.1:8000/update_service_ticket', salesforcePayload);
+      await axios.patch('http://127.0.0.1:8500/update_service_ticket', salesforcePayload);
 
       onClose();
     } catch (error) {

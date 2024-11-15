@@ -91,17 +91,19 @@ export default function DeviceList({ devices, onUpdateDevices }: DeviceListProps
                 <div className="flex items-start justify-between">
                   <div>
                     <h4 className="font-medium text-gray-900">
-                      {device.type} - {t('device.serialNumber')}: {device.serialNumber}
+                      {device.type}{t('device.serialNumber')}: {device.serialNumber}
                     </h4>
                     <div className="mt-2 space-y-2">
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Calendar className="w-4 h-4" />
                         <span>{t('device.warrantyUntil')}: {device.warrantyUntilDate}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <User className="w-4 h-4" />
-                        <span>{device.customerName}</span>
-                      </div>
+                        {device.customerName && (
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <User className="w-4 h-4" />
+                          <span>{device.customerName}</span>
+                        </div>
+                        )}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

@@ -8,7 +8,7 @@ import { Box } from './types';
 const getBoxes = async (): Promise<Box[]> => {
   try {
     console.log('Fetching boxes from API...');
-    const response = await fetch('http://127.0.0.1:8000/boxes', {
+    const response = await fetch('http://127.0.0.1:8500/boxes', {
       method: 'GET',
       mode: 'cors',
       credentials: 'include',
